@@ -221,7 +221,7 @@ var $=function(id){return document.getElementById(id)};
 var rp=function(n){return "Rp"+Number(n).toLocaleString("id-ID")};
 var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 // GANTI dengan link /exec dari Apps Script (Deploy → Web app)
-var API="https://script.google.com/macros/library/d/14xO_WM0LIp6yTVoGusbH9WYwXTweE7dwBQ5Fv486SocIbET6qetqoNko/2";
+var API="https://script.google.com/macros/s/AKfycbzTNuhKLFghj_zUL23mYdMqeaw4nfJVfZwwKMiuYfRmhqcZX26s0Op6T8SWwoaiOq1L/exec";
 function run(fn,args){
   args=args||[];
   var u=fn==="getInit"?API+"?action=init":API+"?action=products&q="+encodeURIComponent(args[0]||"")+"&cat="+encodeURIComponent(args[1]||"Semua")+"&offset="+(args[2]||0)+"&limit="+(args[3]||24);
