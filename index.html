@@ -201,6 +201,12 @@ dialog[open]{animation:pop .2s ease}
 .pd-img img{padding:10px}
 .sw b img,.ci .ic img{padding:2px}
 .heart,.badge{z-index:3}
+/* ===== kategori minimalis ===== */
+.cats{max-width:520px;gap:4px}
+.cat{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;color:var(--mut)}
+.cat[aria-pressed=true]{color:var(--ink);font-weight:600}
+.cat span{max-width:46px;height:46px;font-size:21px;border-radius:12px;background:transparent;margin-bottom:4px}
+@media(min-width:700px){.cat{font-size:12px}.cat span{max-width:52px;height:52px;font-size:24px}}
 </style>
 </head>
 <body>
@@ -258,11 +264,16 @@ var $=function(id){return document.getElementById(id)};
 var rp=function(n){return "Rp"+Number(n).toLocaleString("id-ID")};
 var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 // GANTI dengan link /exec dari Apps Script (Deploy → Web app)
-var API="https://script.google.com/macros/library/d/14xO_WM0LIp6yTVoGusbH9WYwXTweE7dwBQ5Fv486SocIbET6qetqoNko/4";
+var API="https://script.google.com/macros/s/AKfycbzTNuhKLFghj_zUL23mYdMqeaw4nfJVfZwwKMiuYfRmhqcZX26s0Op6T8SWwoaiOq1L/exec";
+function getJson(u,n){
+  return fetch(u).then(function(r){return r.json()}).then(function(d){if(d&&d.error)throw new Error(d.error);return d})
+  .catch(function(err){if(n>0)return new Promise(function(ok){setTimeout(ok,1500)}).then(function(){return getJson(u,n-1)});throw err});
+}
+function errMsg(e){var m=String(e&&e.message||e);return /failed to fetch|networkerror|load failed/i.test(m)?"Tidak bisa terhubung ke server katalog. Periksa link /exec di index.html dan deployment Apps Script (Anyone), lalu coba lagi.":"Gagal memuat: "+m}
 function run(fn,args){
   args=args||[];
   var u=fn==="getInit"?API+"?action=init":API+"?action=products&q="+encodeURIComponent(args[0]||"")+"&cat="+encodeURIComponent(args[1]||"Semua")+"&offset="+(args[2]||0)+"&limit="+(args[3]||24)+"&opts="+encodeURIComponent(JSON.stringify(args[4]||{}));
-  return fetch(u).then(function(r){return r.json()}).then(function(d){if(d&&d.error)throw new Error(d.error);return d});
+  return getJson(u,2);
 }
 function save(){try{localStorage.setItem("toko_state",JSON.stringify({cart:cart,fav:fav}))}catch(e){}}
 function load(){try{var s=JSON.parse(localStorage.getItem("toko_state")||"{}");cart=s.cart||[];fav=s.fav||{}}catch(e){}}
@@ -350,7 +361,7 @@ $("navFav").onclick=function(){favMode=!favMode;this.classList.toggle("on",favMo
 function fetchList(reset){if(reset!==false)startList()}
 function startList(after){
   var my=++tok;off=0;done=false;busy=true;$("empty").hidden=true;
-  var OP=opts(),key="toko_p0_"+cat+"_"+JSON.stringify(OP),c=null;
+  var OP=opts(),key="toko3_p0_"+cat+"_"+JSON.stringify(OP),c=null;
   renderTags();
   if(favMode&&!(OP.ids&&OP.ids.length)){busy=false;done=true;$("grid").innerHTML="";$("exSub").textContent="0 produk favorit";$("empty").textContent="Belum ada favorit. Ketuk ♡ pada produk.";$("empty").hidden=false;if(after)after();return}
   if(!q&&!favMode){try{c=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}}
@@ -366,7 +377,7 @@ function startList(after){
     checkMore();
   }).catch(function(e){
     if(my!==tok)return;busy=false;
-    if(!(c&&c.items)){$("grid").innerHTML="";$("exSub").textContent="Gagal memuat: "+(e&&e.message||e)}
+    if(!(c&&c.items)){$("grid").innerHTML="";$("exSub").textContent="";var em=$("empty");em.innerHTML="";var p=document.createElement("p");p.textContent=errMsg(e);var b=document.createElement("button");b.className="fb";b.type="button";b.textContent="Coba lagi";b.style.margin="0 auto";b.onclick=function(){startList(after)};em.appendChild(p);em.appendChild(b);em.hidden=false}
   });
 }
 function pump(){
@@ -483,11 +494,15 @@ function applyInit(r){
   var rail=$("rail");rail.innerHTML="";var fr=document.createDocumentFragment();r.promo.forEach(function(p){fr.appendChild(card(p))});rail.appendChild(fr);
   $("promoSub").textContent=r.promoTotal+" produk diskon tersedia di toko";
 }
-var ci=null;try{ci=JSON.parse(localStorage.getItem("toko_init")||"null")}catch(e){}
+function okInit(r){return !!(r&&r.ver>=3&&r.cats&&r.cats.length<=8)}
+var ci=null;try{ci=JSON.parse(localStorage.getItem("toko_init3")||"null")}catch(e){}
+if(!okInit(ci))ci=null;
 if(ci)applyInit(ci);
 startList(function(){
-  run("getInit").then(function(r){applyInit(r);try{localStorage.setItem("toko_init",JSON.stringify(r))}catch(e){}})
-  .catch(function(e){if(!ci)$("exSub").textContent="Gagal memuat kategori: "+(e&&e.message||e)});
+  run("getInit").then(function(r){
+    if(!okInit(r)){$("exSub").textContent="Versi Code.gs di Apps Script masih lama. Tempel Code.gs terbaru, lalu Deploy → New version.";r.cats=[];r.subs={}}
+    applyInit(r);try{if(okInit(r))localStorage.setItem("toko_init3",JSON.stringify(r))}catch(e){}})
+  .catch(function(e){if(!ci)$("exSub").textContent=errMsg(e)});
 });
 </script>
 </body>
