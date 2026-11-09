@@ -1,4 +1,397 @@
-cons text = fungsi nya untuk merincikan menjelaskan
-apa yang ingin disampaikan
-console.log= yakni perintah agar terminal hanya mennjalankan
-objek yang diinginkan
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EIGER SUMATERA BANDUNG</title>
+<meta name="author" content="MUHAMAD REZA PRADANA">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1a33;--card:#13294b;--ink:#eaf1ff;--mut:#9fb3d1;--dark:#050d1c;--acc:#f47b20;--red:#ff5b4d;--line:#24406b;color-scheme:dark;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1a33;--card:#13294b;--ink:#eaf1ff;--mut:#9fb3d1;--dark:#050d1c;--line:#24406b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a1a33;--card:#13294b;--ink:#eaf1ff;--mut:#9fb3d1;--dark:#050d1c;--line:#24406b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.4 Inter,system-ui,sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.w{max-width:1100px;margin:0 auto;padding:0 16px}
+h2,.cond{font-family:"Barlow Condensed","Arial Narrow",sans-serif;text-transform:uppercase;letter-spacing:.01em}
+/* top bar */
+.top{background:var(--dark);color:#fff;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+.top .w{display:flex;align-items:center;gap:12px;height:62px}
+.logo{display:flex;align-items:center;gap:10px;min-width:0}
+.logo i{flex:none;width:32px;height:32px;border-radius:8px;background:var(--acc);display:grid;place-items:center;font-style:normal}
+.logo b{display:block;font:700 17px "Barlow Condensed",sans-serif;text-transform:uppercase;white-space:nowrap}
+.logo small{display:block;color:#aaa;font-size:11px}
+.search{flex:1;min-width:0}
+.search input{width:100%;height:38px;border:0;border-radius:8px;padding:0 12px;font:inherit;background:#fff;color:#1c1c1c}
+.nav{display:flex;gap:6px}
+.nav button{background:none;border:0;color:#fff;width:36px;height:36px;border-radius:8px;font-size:17px}
+.nav .on{background:#3a3a3a}
+@media(max-width:640px){.logo span{display:none}.nav button:nth-child(2),.nav button:nth-child(3){display:none}}
+/* hero */
+.hero{position:relative;margin:16px 0;border-radius:16px;overflow:hidden;height:min(56vw,360px);background:#333}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;color:#fff;opacity:0;transition:opacity .5s}
+.slide.on{opacity:1}
+.slide .big{position:absolute;right:6%;top:-8%;font:700 min(46vw,330px)/1 "Barlow Condensed",sans-serif;opacity:.22}
+.slide h3{margin:0;font:700 clamp(26px,5vw,40px)/1 "Barlow Condensed",sans-serif;text-transform:uppercase;position:relative}
+.slide p{margin:4px 0 12px;position:relative}
+.pill{position:relative;align-self:flex-start;background:var(--acc);color:#fff;border:0;border-radius:99px;padding:9px 16px;font-weight:600}
+.dots{position:absolute;right:16px;bottom:14px;display:flex;gap:5px}
+.dots i{width:6px;height:6px;border-radius:9px;background:#fff8;transition:width .3s}
+.dots i.on{width:22px;background:#fff}
+/* categories */
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:22px 0 10px}
+.sec-h h2{margin:0;font-size:22px}
+.sec-h a,.sec-h button{background:none;border:0;font-weight:600;padding:0}
+.cats{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px}
+.cat{flex:none;width:68px;text-align:center;background:none;border:0;padding:0;font-size:12px}
+.cat span{display:grid;place-items:center;width:68px;height:68px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:28px;margin-bottom:6px}
+.cat[aria-pressed=true] span{background:#1c1c1c;color:#fff;border-color:#1c1c1c}
+/* promo */
+.promo{background:var(--dark);color:#fff;margin-top:22px;padding:22px 0 24px}
+.promo h2{margin:0;font-size:24px}
+.promo .sub{color:#a9a9a4;margin:2px 0 12px}
+.promo .sec-h{margin:0}
+.promo .sec-h button{color:var(--acc)}
+.rail{display:flex;gap:12px;overflow-x:auto;padding:4px 16px 4px}
+.rail .card{flex:none;width:214px}
+/* products */
+.card{position:relative;background:var(--card);color:var(--ink);border-radius:12px;border:1px solid var(--line);padding:10px;display:flex;flex-direction:column}
+.img{height:130px;display:grid;place-items:center;font-size:62px}
+.badge{position:absolute;left:8px;top:8px;background:var(--red);color:#fff;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px}
+.heart{position:absolute;right:8px;top:6px;background:none;border:0;font-size:18px;color:var(--mut);width:34px;height:34px}
+.heart[aria-pressed=true]{color:var(--red)}
+.nm{font:600 15px/1.15 "Barlow Condensed",sans-serif;text-transform:uppercase;margin:6px 0 8px;min-height:34px}
+.var{color:var(--mut);font-size:12px;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.var i{width:9px;height:9px;border-radius:50%}
+.pr{font-weight:700;font-size:16px}
+.pr s{color:var(--mut);font-weight:400;font-size:11px;margin-left:5px}
+.stk{color:var(--acc);font-size:11px;font-weight:500;margin-top:2px;min-height:16px}
+.explore .sub{color:var(--mut);margin:-6px 0 12px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:12px}
+.chip{flex:none;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:7px 13px;font-weight:500}
+.chip small{color:var(--mut);margin-left:3px}
+.chip[aria-pressed=true]{background:#1c1c1c;color:#fff;border-color:#1c1c1c}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;padding-bottom:20px}
+.more{display:block;margin:0 auto 48px;background:#1c1c1c;color:#fff;border:0;border-radius:99px;padding:12px 28px;font-weight:600}
+.more[hidden]{display:none}
+.card .img{height:110px;font-size:52px}
+.empty{text-align:center;color:var(--mut);padding:30px 0}
+.card{cursor:pointer}
+dialog.pd{border:0;border-radius:16px;padding:0;width:min(940px,calc(100% - 24px));max-height:88vh;background:var(--card);color:var(--ink);overflow:hidden}
+dialog.pd[open]{display:flex;flex-direction:column}
+dialog.pd::backdrop{background:rgba(0,0,0,.6)}
+.pd-top{position:absolute;right:12px;top:10px;display:flex;gap:6px;z-index:2}
+.pd-top button{width:38px;height:38px;border:0;background:none;font-size:20px}
+.pd-scroll{overflow:auto;display:grid;grid-template-columns:1fr;gap:6px 24px;padding:14px 18px 8px}
+@media(min-width:720px){.pd-scroll{grid-template-columns:1fr 1fr;padding:18px 22px 8px}}
+.pd-img{display:grid;place-items:center;min-height:240px;font-size:150px;position:relative}
+.pd-img .badge{left:0;top:6px;font-size:12px}
+.pd-info{padding-top:26px}
+.pd-info h3{margin:0;font:700 26px/1.05 "Barlow Condensed",sans-serif;text-transform:uppercase;padding-right:90px}
+.pd-sub{color:var(--mut);font-size:13px;margin:2px 0 10px}
+.pd-price{font:700 26px "Barlow Condensed",sans-serif}
+.pd-price s{font:400 14px Inter,sans-serif;color:var(--mut);margin-left:8px}
+.pd-row{display:flex;justify-content:space-between;margin:16px 0 8px;font-weight:600}
+.pd-row span:last-child{font-weight:400;color:var(--mut);font-size:12px}
+.opts{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:70px;border:0;background:none;padding:0;text-align:center;font-size:12px}
+.sw b{display:grid;place-items:center;height:56px;border:2px solid var(--line);border-radius:10px;font-size:26px;margin-bottom:4px;border-bottom-width:5px}
+.sw[aria-pressed=true] b{border-color:#1c1c1c}
+.sz{border:1.5px solid var(--line);background:var(--card);border-radius:10px;padding:7px 14px;font-weight:700;line-height:1.1;text-align:center}
+.sz small{display:block;font-weight:400;font-size:10px;color:var(--mut)}
+.sz[aria-pressed=true]{background:#1c1c1c;color:#fff;border-color:#1c1c1c}
+.sz[aria-pressed=true] small{color:#ddd}
+.stk2{color:#b45309;font-weight:500;margin:12px 0}
+.stk2::before{content:"● "}
+.spec{background:var(--bg);border-radius:10px;padding:10px 14px;display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:13px}
+.spec span:nth-child(odd){color:var(--mut)}
+.note{margin:12px 0 4px;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;color:var(--mut);font-size:12px}
+.pd-foot{display:flex;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.pd-foot button{height:46px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-weight:600;padding:0 14px}
+.pd-foot .cart{flex:1;background:var(--acc);border-color:var(--acc);color:#fff}
+.pd-foot .fv[aria-pressed=true]{color:var(--red)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1c1c1c;color:#fff;padding:10px 18px;border-radius:99px;z-index:99;opacity:0;pointer-events:none;transition:opacity .25s}
+#toast.on{opacity:1}
+.nav button{position:relative}
+.bdg{position:absolute;right:0;top:0;background:var(--acc);color:#fff;border-radius:99px;font:700 10px/16px Inter,sans-serif;min-width:16px;height:16px;padding:0 4px}
+.bdg[hidden]{display:none}
+dialog.ct{border:0;border-radius:16px;padding:0;width:min(520px,calc(100% - 24px));max-height:88vh;background:var(--card);color:var(--ink)}
+dialog.ct[open]{display:flex;flex-direction:column}
+dialog.ct::backdrop{background:rgba(0,0,0,.6)}
+.ct-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.ct-h h2{margin:0;font-size:22px}
+.ct-h button{border:0;background:none;font-size:20px;width:36px;height:36px}
+.ct-list{overflow:auto;padding:6px 18px}
+.ci{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.ci .ic{font-size:34px;background:var(--bg);border-radius:10px;display:grid;place-items:center;height:52px}
+.ci b{display:block;font:600 15px/1.15 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.ci small{color:var(--mut)}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px}
+.qty button{width:28px;height:28px;border:1px solid var(--line);border-radius:8px;background:var(--card);font-weight:700}
+.ci .rm{border:0;background:none;color:var(--red);font-size:12px;padding:0}
+.ci .pp{text-align:right;font-weight:700}
+.ct-f{padding:12px 18px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.tot{display:flex;justify-content:space-between;font-weight:700;font-size:17px;margin-bottom:10px}
+.wa{width:100%;height:46px;border:0;border-radius:10px;background:#25a244;color:#fff;font-weight:600}
+.wa:disabled{opacity:.4}
+body{background:linear-gradient(180deg,#0c2347 0%,#08162d 55%,#050d1c 100%) fixed}
+.promo{background:linear-gradient(180deg,#050d1c,#0a1a33);border-block:1px solid var(--line)}
+.cat[aria-pressed=true] span,.chip[aria-pressed=true],.sz[aria-pressed=true]{background:#2f7bff;border-color:#2f7bff;color:#fff}
+.more{background:#2f7bff}
+.sw[aria-pressed=true] b{border-color:#fff}
+.stk2{color:#ffb454}
+.heart{color:#9fb3d1}
+.img,.pd-img{filter:drop-shadow(0 6px 10px rgba(0,0,0,.35))}
+.img img,.pd-img img{max-width:100%;max-height:100%;object-fit:contain}
+.img{overflow:hidden}
+.pd-img img{max-height:300px}
+.pd-img{font-size:130px}
+.ldg{text-align:center;color:var(--mut);padding:30px 0}
+/* ===== perbaikan tampilan & kehalusan ===== */
+html{scroll-behavior:smooth}
+.img,.pd-img{filter:none}
+.img{height:120px;overflow:hidden}
+.img img,.pd-img img,.sw b img,.ci .ic img{width:100%;height:100%;max-height:none;object-fit:contain;display:block;opacity:0;transition:opacity .3s}
+.img img.ok,.pd-img img.ok,.sw b img.ok,.ci .ic img.ok{opacity:1}
+.pd-img{min-height:0;height:min(32vh,220px);font-size:90px;overflow:hidden}
+@media(min-width:720px){.pd-img{height:340px}}
+.sw b{overflow:hidden;padding:2px}
+.ci .ic{overflow:hidden}
+.card{content-visibility:auto;contain-intrinsic-size:auto 250px;animation:up .28s ease both;transition:transform .15s}
+.card:active{transform:scale(.985)}
+.sk{height:215px;border-radius:12px;background:linear-gradient(90deg,var(--card) 25%,var(--line) 50%,var(--card) 75%);background-size:200% 100%;animation:sh 1.2s linear infinite}
+@keyframes sh{to{background-position:-200% 0}}
+@keyframes up{from{opacity:0;transform:translateY(8px)}}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}}
+dialog[open]{animation:pop .2s ease}
+#sentinel{height:1px}
+.credit{text-align:center;color:var(--mut);font-size:11px;padding:18px 16px calc(26px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="top"><div class="w">
+  <div class="logo"><i>⛰️</i><span><b id="shop">EIGER SUMATERA BANDUNG</b><small>Adventure Starts Here</small></span></div>
+  <label class="search"><input id="q" type="search" placeholder="Cari tas, sepatu, jaket, SKU…" aria-label="Cari produk"></label>
+  <div class="nav"><button class="on" aria-label="Beranda" id="home">🏠</button><button aria-label="Kategori">▦</button><button aria-label="Promo">🏷️</button><button aria-label="Favorit">♡</button><button aria-label="Keranjang" id="cartBtn">🛍️<span class="bdg" id="bdg" hidden>0</span></button></div>
+</div></div>
+
+<div class="w">
+  <div class="hero" id="hero"></div>
+  <div class="sec-h"><h2>Kategori</h2><button id="allCat">Semua ›</button></div>
+  <div class="cats" id="cats"></div>
+</div>
+
+<section class="promo">
+  <div class="w"><div class="sec-h"><div><h2>🔥 Promo pilihan</h2><div class="sub" id="promoSub"></div></div><button id="allPromo">Lihat semua ›</button></div></div>
+  <div class="rail" id="rail"></div>
+</section>
+
+<section class="w explore" id="explore">
+  <div class="sec-h" style="margin-top:24px"><h2>Jelajahi produk</h2></div>
+  <div class="sub" id="exSub"></div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+  <div id="sentinel"></div>
+  <div class="empty" id="empty" hidden>Produk tidak ditemukan. Coba kata kunci atau kategori lain.</div>
+</section>
+
+<footer class="credit">EIGER SUMATERA BANDUNG · Website dibuat oleh <b>MUHAMAD REZA PRADANA</b></footer>
+<dialog class="pd" id="pd" aria-label="Detail produk">
+  <div class="pd-top"><button type="button" id="pdShare" aria-label="Bagikan">⤴</button><button type="button" id="pdX" aria-label="Tutup">✕</button></div>
+  <div class="pd-scroll" id="pdBody"></div>
+  <div class="pd-foot"><button class="fv" id="pdFav" type="button" aria-label="Favorit">♡</button><button id="pdAsk" type="button">💬 Tanya</button><button class="cart" id="pdCart" type="button">🛍️ Tambah ke keranjang</button></div>
+</dialog>
+<dialog class="ct" id="ct" aria-label="Keranjang">
+  <div class="ct-h"><h2>Keranjang</h2><button type="button" id="ctX" aria-label="Tutup">✕</button></div>
+  <div class="ct-list" id="ctList"></div>
+  <div class="ct-f"><div class="tot"><span>Total</span><span id="ctTot">Rp0</span></div><button class="wa" id="ctWa" type="button">Pesan via WhatsApp</button></div>
+</dialog>
+<div id="toast" role="status"></div>
+
+<script>
+var cfg={nama:"Toko",wa:"",batas:2},cat="Semua",q="",off=0,LIM=30,total=0,tok=0,cart=[],fav={};
+var C={BLK:"#1c1c1c",MAR:"#8b1e2d",OLI:"#6b7040",NOC:"#cfcfc9",NVY:"#1e3a5f",NAV:"#1e3a5f",BRE:"#6f8f8f",GRY:"#8a8d90",BSD:"#3b3f3a",WHT:"#f4f4f4",BLU:"#1f4aa8",BLD:"#2b2f33",RED:"#d6402f",LIM:"#d9e26a"};
+var EMO={Backpack:"🎒",Footwear:"👟",Apparel:"👕",Accessories:"🧢",Equipment:"⛺"};
+var $=function(id){return document.getElementById(id)};
+var rp=function(n){return "Rp"+Number(n).toLocaleString("id-ID")};
+var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
+// GANTI dengan link /exec dari Apps Script (Deploy → Web app)
+var API="https://script.google.com/macros/library/d/14xO_WM0LIp6yTVoGusbH9WYwXTweE7dwBQ5Fv486SocIbET6qetqoNko/4";
+function run(fn,args){
+  args=args||[];
+  var u=fn==="getInit"?API+"?action=init":API+"?action=products&q="+encodeURIComponent(args[0]||"")+"&cat="+encodeURIComponent(args[1]||"Semua")+"&offset="+(args[2]||0)+"&limit="+(args[3]||24);
+  return fetch(u).then(function(r){return r.json()}).then(function(d){if(d&&d.error)throw new Error(d.error);return d});
+}
+function save(){try{localStorage.setItem("toko_state",JSON.stringify({cart:cart,fav:fav}))}catch(e){}}
+function load(){try{var s=JSON.parse(localStorage.getItem("toko_state")||"{}");cart=s.cart||[];fav=s.fav||{}}catch(e){}}
+function uniq(a){return a.filter(function(v,i){return a.indexOf(v)===i})}
+function setImg(box,src,c){box.textContent="";var emo=EMO[c]||"📦";
+  if(!src){box.textContent=emo;return}
+  var im=new Image();im.alt="";im.decoding="async";im.loading="lazy";
+  im.onload=function(){im.classList.add("ok")};im.onerror=function(){box.textContent=emo};
+  im.src=src;box.appendChild(im)}
+function toast(t){var e=$("toast");e.textContent=t;e.classList.add("on");setTimeout(function(){e.classList.remove("on")},1800)}
+
+/* ---------- kartu produk ---------- */
+function card(p){
+  var cs=uniq(p.v.map(function(v){return v.col}).filter(Boolean)),
+      ss=uniq(p.v.map(function(v){return v.size}).filter(function(s){return s&&s!=="-"})),
+      line=(cs[0]||"")+(ss.length===1?" · "+ss[0]:ss.length>1?" · "+ss.length+" ukuran":"")+(cs.length>1?" · +"+(cs.length-1)+" warna":""),
+      x=document.createElement("div");x.className="card";
+  x.innerHTML=(p.d?'<span class="badge">-'+p.d+'%</span>':'')+
+  '<button class="heart" aria-label="Favorit" aria-pressed="'+!!fav[p.id]+'">'+(fav[p.id]?"♥":"♡")+'</button>'+
+  '<div class="img"></div><div class="nm">'+esc(p.n)+'</div>'+
+  '<div class="var"><i style="background:'+(C[cs[0]]||"#8a8d90")+'"></i>'+esc(line)+'</div>'+
+  '<div class="pr">'+rp(p.price)+(p.d?'<s>'+rp(p.p)+'</s>':'')+'</div>'+
+  '<div class="stk">'+(p.st>0&&p.st<=cfg.batas?'Sisa '+p.st+' pcs':'')+'</div>';
+  setImg(x.querySelector(".img"),p.photo,p.c);
+  x.querySelector(".heart").onclick=function(e){e.stopPropagation();fav[p.id]=!fav[p.id];save();var b=e.currentTarget;b.textContent=fav[p.id]?"♥":"♡";b.setAttribute("aria-pressed",!!fav[p.id])};
+  x.onclick=function(){openPd(p)};
+  return x;
+}
+
+/* ---------- daftar produk ---------- */
+function chips(cats){
+  var cc=$("cats"),ch=$("chips");cc.innerHTML="";ch.innerHTML="";
+  [{name:"Semua",count:total0}].concat(cats).forEach(function(c){
+    var b=document.createElement("button");b.className="cat";b.setAttribute("aria-pressed",c.name===cat);b.innerHTML="<span>"+(c.name==="Semua"?"▦":EMO[c.name]||"📦")+"</span>"+esc(c.name);b.onclick=function(){setCat(c.name)};cc.appendChild(b);
+    var h=document.createElement("button");h.className="chip";h.setAttribute("aria-pressed",c.name===cat);h.innerHTML=esc(c.name)+"<small>"+c.count+"</small>";h.onclick=function(){setCat(c.name)};ch.appendChild(h);
+  });
+}
+var total0=0,CATS=[];
+var done=false,busy=false;
+function itemsToGrid(items,clear){
+  var g=$("grid");if(clear)g.innerHTML="";
+  var fr=document.createDocumentFragment();items.forEach(function(p){fr.appendChild(card(p))});g.appendChild(fr);
+}
+function skel(){var g=$("grid");g.innerHTML="";for(var i=0;i<8;i++){var d=document.createElement("div");d.className="sk";g.appendChild(d)}}
+function setCat(c){cat=c;chips(CATS);startList()}
+function fetchList(reset){if(reset!==false)startList()}
+function startList(after){
+  var my=++tok;off=0;done=false;busy=true;$("empty").hidden=true;
+  var key="toko_p0_"+cat,c=null;
+  if(!q){try{c=JSON.parse(localStorage.getItem(key)||"null")}catch(e){}}
+  if(c&&c.items){itemsToGrid(c.items,true);off=c.items.length;$("exSub").textContent=c.total+" produk · stok tersedia di toko"}
+  else{skel();$("exSub").textContent="Memuat produk…"}
+  run("getProducts",[q,cat,0,LIM]).then(function(r){
+    if(my!==tok)return;
+    if(!(c&&JSON.stringify(c.items)===JSON.stringify(r.items)))itemsToGrid(r.items,true);
+    off=r.items.length;total=r.total;done=off>=total;busy=false;
+    $("exSub").textContent=r.total+" produk · stok tersedia di toko";$("empty").hidden=r.total>0;
+    if(!q){try{localStorage.setItem(key,JSON.stringify({items:r.items,total:r.total}))}catch(e){}}
+    if(after)after();
+    checkMore();
+  }).catch(function(e){
+    if(my!==tok)return;busy=false;
+    if(!(c&&c.items)){$("grid").innerHTML="";$("exSub").textContent="Gagal memuat: "+(e&&e.message||e)}
+  });
+}
+function pump(){
+  if(busy||done)return;busy=true;var my=tok;
+  run("getProducts",[q,cat,off,LIM]).then(function(r){
+    if(my!==tok)return;
+    itemsToGrid(r.items,false);off+=r.items.length;total=r.total;done=off>=total||!r.items.length;busy=false;checkMore();
+  }).catch(function(){
+    if(my!==tok)return;busy=false;setTimeout(function(){if(my===tok)checkMore()},3000);
+  });
+}
+function checkMore(){var s=$("sentinel");if(!done&&!busy&&s.getBoundingClientRect().top<window.innerHeight+1500)pump()}
+if("IntersectionObserver" in window){new IntersectionObserver(function(en){if(en[0].isIntersecting)checkMore()},{rootMargin:"1500px"}).observe($("sentinel"))}
+var tm;$("q").addEventListener("input",function(){q=this.value;clearTimeout(tm);tm=setTimeout(function(){fetchList(true);$("explore").scrollIntoView({behavior:"smooth"})},350)});
+$("allCat").onclick=function(){setCat("Semua")};
+$("allPromo").onclick=function(){cat="__promo";chips(CATS);fetchList(true);$("explore").scrollIntoView({behavior:"smooth"})};
+$("home").onclick=function(){window.scrollTo({top:0,behavior:"smooth"})};
+
+/* ---------- hero ---------- */
+var S=[["","Explore More","Temukan perlengkapan adventure pilihanmu","#3d4a52"],["50%","Special Promo","Diskon sampai 50% untuk produk pilihan","#3f5a3a"],["NEW","Koleksi Terbaru","Perlengkapan baru untuk pendakianmu","#2f4b5e"]];
+var hero=$("hero"),hi=0;
+S.forEach(function(s,i){var d=document.createElement("div");d.className="slide"+(i?"":" on");d.style.background="linear-gradient(135deg,"+s[3]+",#161616)";
+d.innerHTML='<div class="big">'+s[0]+'</div><h3>'+s[1]+'</h3><p>'+s[2]+'</p><button class="pill" onclick="document.getElementById(\'explore\').scrollIntoView({behavior:\'smooth\'})">Lihat Produk ›</button>';hero.appendChild(d)});
+var dots=document.createElement("div");dots.className="dots";S.forEach(function(_,i){dots.appendChild(document.createElement("i")).className=i?"":"on"});hero.appendChild(dots);
+setInterval(function(){hi=(hi+1)%S.length;[].forEach.call(hero.querySelectorAll(".slide"),function(e,i){e.classList.toggle("on",i===hi)});[].forEach.call(dots.children,function(e,i){e.classList.toggle("on",i===hi)})},4000);
+
+/* ---------- detail produk ---------- */
+var pd=$("pd"),cur=null,selC="",selK="";
+function vOf(){var vs=cur.v.filter(function(v){return v.col===selC});return vs.find(function(v){return v.sku===selK})||vs[0]}
+function openPd(p){cur=p;selC=p.v[0].col;selK=p.v[0].sku;drawPd();pd.showModal()}
+function drawPd(){
+  var p=cur,cs=uniq(p.v.map(function(v){return v.col})),vs=p.v.filter(function(v){return v.col===selC}),v=vs.find(function(x){return x.sku===selK})||vs[0];selK=v.sku;
+  var showSize=vs.length>1||(v.size&&v.size!=="-");
+  var sw=cs.map(function(c){var rep=p.v.filter(function(x){return x.col===c})[0];return '<button class="sw" type="button" data-c="'+esc(c)+'" aria-pressed="'+(c===selC)+'"><b style="border-bottom-color:'+(C[c]||"#8a8d90")+'"></b>'+esc(c||"-")+'</button>'}).join("");
+  var sz=vs.map(function(x){return '<button class="sz" type="button" data-k="'+esc(x.sku)+'" aria-pressed="'+(x.sku===selK)+'"'+(x.st<=0?' disabled':'')+'>'+esc(x.size||"-")+'<small>'+(x.st>0?'sisa '+x.st:'habis')+'</small></button>'}).join("");
+  var b=$("pdBody");
+  b.innerHTML='<div class="pd-img">'+(v.d?'<span class="badge">-'+v.d+'%</span>':'')+'</div><div class="pd-info"><h3>'+esc(p.n)+'</h3><div class="pd-sub">'+esc(p.c)+' · '+esc(selC)+'</div>'+
+  '<div class="pd-price">'+rp(v.price)+(v.d?'<s>'+rp(v.p)+'</s>':'')+'</div>'+
+  (p.desc?'<p class="pd-sub" style="margin:8px 0 0">'+esc(p.desc)+'</p>':'')+
+  '<div class="pd-row"><span>Warna</span><span>'+cs.length+' pilihan</span></div><div class="opts">'+sw+'</div>'+
+  (showSize?'<div class="pd-row"><span>Ukuran</span><span>Dipilih: '+esc(v.size||"-")+'</span></div><div class="opts">'+sz+'</div>':'')+
+  '<div class="stk2">'+esc(v.label||"")+'</div>'+
+  '<div class="spec"><span>SKU</span><span>'+esc(v.sku)+'</span><span>Warna</span><span>'+esc(selC)+'</span>'+(showSize?'<span>Ukuran</span><span>'+esc(v.size||"-")+'</span>':'')+'<span>Kategori</span><span>'+esc(p.c)+' › '+esc(p.c)+'</span></div>'+
+  '<div class="note">🏪 Bisa diambil langsung di toko atau dikirim lewat JNE, GoSend, AnterAja.</div></div>';
+  setImg(b.querySelector(".pd-img"),v.photo||p.photo,p.c);
+  var pic=b.querySelector(".pd-img");if(v.d){var bd=document.createElement("span");bd.className="badge";bd.textContent="-"+v.d+"%";pic.appendChild(bd)}
+  [].forEach.call(b.querySelectorAll(".sw"),function(e){var rep=p.v.filter(function(x){return x.col===e.dataset.c})[0],bx=e.querySelector("b");setImg(bx,rep.photo,p.c);bx.style.fontSize="26px";e.onclick=function(){selC=e.dataset.c;selK="";drawPd()}});
+  [].forEach.call(b.querySelectorAll(".sz"),function(e){e.onclick=function(){selK=e.dataset.k;drawPd()}});
+  var f=$("pdFav");f.textContent=fav[p.id]?"♥":"♡";f.setAttribute("aria-pressed",!!fav[p.id]);
+  $("pdCart").disabled=v.st<=0;$("pdCart").style.opacity=v.st<=0?".5":"1";
+}
+$("pdX").onclick=function(){pd.close()};
+pd.addEventListener("click",function(e){if(e.target===pd)pd.close()});
+$("pdFav").onclick=function(){fav[cur.id]=!fav[cur.id];save();drawPd()};
+$("pdAsk").onclick=function(){var v=vOf();window.open("https://wa.me/"+cfg.wa+"?text="+encodeURIComponent("Halo, saya ingin bertanya tentang "+cur.n+" (SKU "+v.sku+", warna "+selC+(v.size&&v.size!=="-"?", ukuran "+v.size:"")+")"),"_blank","noopener")};
+$("pdShare").onclick=function(){var t=cur.n+" — "+rp(vOf().price);if(navigator.share){navigator.share({title:cur.n,text:t}).catch(function(){})}else{toast("Tidak bisa dibagikan di sini")}};
+
+/* ---------- keranjang ---------- */
+var ct=$("ct");
+function cartCount(){return cart.reduce(function(a,i){return a+i.q},0)}
+function cartTotal(){return cart.reduce(function(a,i){return a+i.price*i.q},0)}
+function drawCart(){
+  var n=cartCount(),bd=$("bdg");bd.hidden=!n;bd.textContent=n;
+  var l=$("ctList");
+  if(!cart.length){l.innerHTML='<div class="empty">Keranjang masih kosong. Pilih produk, lalu ketuk Tambah ke keranjang.</div>'}
+  else{l.innerHTML="";cart.forEach(function(i,ix){
+    var d=document.createElement("div");d.className="ci";
+    d.innerHTML='<div class="ic"></div><div><b>'+esc(i.n)+'</b><small>'+esc(i.col)+(i.size&&i.size!=="-"?' · '+esc(i.size):'')+'</small><div class="qty"><button type="button" aria-label="Kurangi">−</button><span>'+i.q+'</span><button type="button" aria-label="Tambah">+</button></div></div><div class="pp">'+rp(i.price*i.q)+'<br><button class="rm" type="button">Hapus</button></div>';
+    setImg(d.querySelector(".ic"),i.photo,i.c);
+    var b=d.querySelectorAll("button");
+    b[0].onclick=function(){i.q--;if(i.q<1)cart.splice(ix,1);save();drawCart()};
+    b[1].onclick=function(){if(i.q>=i.st){toast("Stok terbatas");return}i.q++;save();drawCart()};
+    b[2].onclick=function(){cart.splice(ix,1);save();drawCart()};
+    l.appendChild(d)})}
+  $("ctTot").textContent=rp(cartTotal());$("ctWa").disabled=!cart.length;
+}
+$("pdCart").onclick=function(){
+  var v=vOf(),f=cart.filter(function(i){return i.sku===v.sku})[0];
+  if(f){if(f.q>=v.st){toast("Stok terbatas");return}f.q++;f.st=v.st}
+  else cart.push({sku:v.sku,n:cur.n,c:cur.c,col:v.col,size:v.size,price:v.price,q:1,st:v.st,photo:v.photo||cur.photo});
+  save();pd.close();drawCart();toast("Ditambahkan ke keranjang");
+};
+$("cartBtn").onclick=function(){drawCart();ct.showModal()};
+$("ctX").onclick=function(){ct.close()};
+ct.addEventListener("click",function(e){if(e.target===ct)ct.close()});
+$("ctWa").onclick=function(){
+  var t="Halo, saya ingin memesan:\n"+cart.map(function(i,n){return (n+1)+". "+i.n+" ("+i.col+(i.size&&i.size!=="-"?", "+i.size:"")+") [SKU "+i.sku+"] x"+i.q+" = "+rp(i.price*i.q)}).join("\n")+"\nTotal: "+rp(cartTotal());
+  window.open("https://wa.me/"+cfg.wa+"?text="+encodeURIComponent(t),"_blank","noopener");
+};
+
+/* ---------- mulai ---------- */
+load();drawCart();
+function applyInit(r){
+  cfg=r.cfg;$("shop").textContent=cfg.nama;total0=r.total;CATS=r.cats;chips(CATS);
+  var rail=$("rail");rail.innerHTML="";var fr=document.createDocumentFragment();r.promo.forEach(function(p){fr.appendChild(card(p))});rail.appendChild(fr);
+  $("promoSub").textContent=r.promoTotal+" produk diskon tersedia di toko";
+}
+var ci=null;try{ci=JSON.parse(localStorage.getItem("toko_init")||"null")}catch(e){}
+if(ci)applyInit(ci);
+startList(function(){
+  run("getInit").then(function(r){applyInit(r);try{localStorage.setItem("toko_init",JSON.stringify(r))}catch(e){}})
+  .catch(function(e){if(!ci)$("exSub").textContent="Gagal memuat kategori: "+(e&&e.message||e)});
+});
+</script>
+</body>
+</html>
