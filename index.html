@@ -207,12 +207,14 @@ dialog[open]{animation:pop .2s ease}
 .cat[aria-pressed=true]{color:var(--ink);font-weight:600}
 .cat span{max-width:46px;height:46px;font-size:21px;border-radius:12px;background:transparent;margin-bottom:4px}
 @media(min-width:700px){.cat{font-size:12px}.cat span{max-width:52px;height:52px;font-size:24px}}
+/* rail promo sejajar dengan isi halaman di layar lebar */
+.rail{padding-left:max(16px,calc((100vw - 1100px)/2 + 16px));padding-right:max(16px,calc((100vw - 1100px)/2 + 16px));scroll-padding-left:max(16px,calc((100vw - 1100px)/2 + 16px))}
 </style>
 </head>
 <body>
 <div class="top"><div class="w">
   <div class="logo"><i>⛰️</i><span><b id="shop">EIGER SUMATERA BANDUNG</b><small>Adventure Starts Here</small></span></div>
-  <label class="search"><input id="q" type="search" placeholder="Cari tas, sepatu, jaket, SKU…" aria-label="Cari produk"></label>
+  <label class="search"><input id="q" type="search" placeholder="Cari jaket, sepatu, tas, kacamata, SKU…" aria-label="Cari produk"></label>
   <div class="nav"><button class="on" aria-label="Beranda" id="home">🏠</button><button aria-label="Kategori" id="navKat">▦</button><button aria-label="Promo" id="navPromo">🏷️</button><button aria-label="Favorit" id="navFav">♡</button><button aria-label="Keranjang" id="cartBtn">🛍️<span class="bdg" id="bdg" hidden>0</span></button></div>
 </div></div>
 
@@ -259,6 +261,9 @@ dialog[open]{animation:pop .2s ease}
 <script>
 var cfg={nama:"Toko",wa:"",batas:2},cat="Semua",q="",off=0,LIM=30,total=0,tok=0,cart=[],fav={};
 var C={BLK:"#1c1c1c",MAR:"#8b1e2d",OLI:"#6b7040",NOC:"#cfcfc9",NVY:"#1e3a5f",NAV:"#1e3a5f",BRE:"#6f8f8f",GRY:"#8a8d90",BSD:"#3b3f3a",WHT:"#f4f4f4",BLU:"#1f4aa8",BLD:"#2b2f33",RED:"#d6402f",LIM:"#d9e26a"};
+var CN={BLK:"Hitam",OLI:"Hijau Army",NAV:"Biru Dongker",GRY:"Abu-abu",BRW:"Coklat",BLU:"Biru",GRE:"Hijau",KHK:"Khaki",WHT:"Putih",DGR:"Abu Tua",TER:"Terakota",RED:"Merah",PNK:"Pink",MAR:"Marun",CRE:"Krem",DBR:"Coklat Tua",ORA:"Oranye",YEL:"Kuning",PUR:"Ungu",MUS:"Mustard",OWH:"Putih Tulang",LGY:"Abu Muda",DPI:"Pink Tua",LBL:"Biru Muda",DBL:"Biru Tua",LGE:"Hijau Muda",DGN:"Hijau Tua",TAN:"Coklat Muda",MGY:"Abu",TEA:"Teal",SIL:"Silver",TOS:"Toska",CAM:"Camo",LIL:"Lilac",BEI:"Beige",BGE:"Beige",LIM:"Lime",GLD:"Emas",NOC:"Tanpa Warna"};
+var cn=function(c){return CN[c]||c||"-"};
+var LBL={},GLBL={};
 var EMO={Backpack:"🎒",Footwear:"👟",Apparel:"👕",Accessories:"🧢",Equipment:"⛺"};
 var $=function(id){return document.getElementById(id)};
 var rp=function(n){return "Rp"+Number(n).toLocaleString("id-ID")};
@@ -289,7 +294,7 @@ function toast(t){var e=$("toast");e.textContent=t;e.classList.add("on");setTime
 function card(p){
   var cs=uniq(p.v.map(function(v){return v.col}).filter(Boolean)),
       ss=uniq(p.v.map(function(v){return v.size}).filter(function(s){return s&&s!=="-"})),
-      line=(cs[0]||"")+(ss.length===1?" · "+ss[0]:ss.length>1?" · "+ss.length+" ukuran":"")+(cs.length>1?" · +"+(cs.length-1)+" warna":""),
+      line=cn(cs[0])+(ss.length===1?" · "+ss[0]:ss.length>1?" · "+ss.length+" ukuran":"")+(cs.length>1?" · +"+(cs.length-1)+" warna":""),
       x=document.createElement("div");x.className="card";
   x.innerHTML=(p.d?'<span class="badge">-'+p.d+'%</span>':'')+
   '<button class="heart" aria-label="Favorit" aria-pressed="'+!!fav[p.id]+'">'+(fav[p.id]?"♥":"♡")+'</button>'+
@@ -308,7 +313,7 @@ function chips(cats){
   var cc=$("cats");cc.innerHTML="";
   [{name:"Semua",count:total0}].concat(cats).forEach(function(c){
     var b=document.createElement("button");b.className="cat";b.type="button";b.setAttribute("aria-pressed",c.name===cat);
-    b.innerHTML="<span>"+(c.name==="Semua"?"▦":EMO[c.name]||"📦")+"</span>"+esc(c.name);b.onclick=function(){setCat(c.name)};cc.appendChild(b);
+    b.innerHTML="<span>"+(c.name==="Semua"?"▦":EMO[c.name]||"📦")+"</span>"+esc(c.label||c.name);b.onclick=function(){setCat(c.name)};cc.appendChild(b);
   });
 }
 var total0=0,CATS=[];
@@ -327,7 +332,7 @@ function renderTags(){
   function add(txt,fn){var b=document.createElement("button");b.className="tag";b.type="button";b.textContent=txt+"  ✕";b.onclick=fn;t.appendChild(b)}
   if(favMode)add("Favorit",function(){favMode=false;$("navFav").classList.remove("on");startList()});
   if(cat==="__promo")add("Promo",function(){cat="Semua";chips(CATS);startList()});
-  if(F.sub){n++;add(F.sub,function(){F.sub="";startList()})}
+  if(F.sub){n++;add(LBL[F.sub]||F.sub,function(){F.sub="";startList()})}
   if(F.gd){n++;add(GD.filter(function(g){return g[0]===F.gd})[0][1],function(){F.gd="";startList()})}
   if(F.pr>=0){n++;add(PR[F.pr][0],function(){F.pr=-1;startList()})}
   if(F.promo){n++;add("Diskon",function(){F.promo=false;startList()})}
@@ -341,9 +346,9 @@ function drawFilter(){
   function sec(t){var h=document.createElement("div");h.className="grp";h.textContent=t;b.appendChild(h);var w=document.createElement("div");w.className="opts2";b.appendChild(w);return w}
   var grp=cat!=="Semua"&&cat!=="__promo"&&SUBS[cat],subs=[];
   if(grp)subs=SUBS[cat];
-  else{var m={};Object.keys(SUBS).forEach(function(g){SUBS[g].forEach(function(s){m[s.name]=(m[s.name]||0)+s.count})});subs=Object.keys(m).map(function(n){return{name:n,count:m[n]}}).sort(function(a,b){return b.count-a.count})}
-  var w=sec(grp?"Jenis "+cat:"Jenis produk");
-  subs.forEach(function(s){w.appendChild(optBtn(s.name+" ("+s.count+")",FT.sub===s.name,function(){FT.sub=FT.sub===s.name?"":s.name;drawFilter()}))});
+  else{var m={};Object.keys(SUBS).forEach(function(g){SUBS[g].forEach(function(s){m[s.name]=(m[s.name]||0)+s.count})});subs=Object.keys(m).map(function(n){return{name:n,label:LBL[n]||n,count:m[n]}}).sort(function(a,b){return b.count-a.count})}
+  var w=sec(grp?"Jenis "+(GLBL[cat]||cat):"Jenis produk");
+  subs.forEach(function(s){w.appendChild(optBtn((s.label||s.name)+" ("+s.count+")",FT.sub===s.name,function(){FT.sub=FT.sub===s.name?"":s.name;drawFilter()}))});
   w=sec("Untuk");GD.forEach(function(g){w.appendChild(optBtn(g[1],FT.gd===g[0],function(){FT.gd=FT.gd===g[0]?"":g[0];drawFilter()}))});
   w=sec("Harga");PR.forEach(function(p,i){w.appendChild(optBtn(p[0],FT.pr===i,function(){FT.pr=FT.pr===i?-1:i;drawFilter()}))});
   w=sec("Promo");w.appendChild(optBtn("Hanya produk diskon",FT.promo,function(){FT.promo=!FT.promo;drawFilter()}));
@@ -403,6 +408,9 @@ var hero=$("hero"),hi=0,htimer=null;
 function goTo(t){
   if(/^https?:\/\//.test(t||"")){window.open(t,"_blank","noopener");return}
   F={sub:"",gd:"",pr:-1,promo:false};favMode=false;$("navFav").classList.remove("on");
+  var tl=String(t||"").toLowerCase(),gm=CATS.filter(function(c){return c.name.toLowerCase()===tl||String(c.label||"").toLowerCase()===tl})[0];
+  if(gm)t=gm.name;
+  else{Object.keys(SUBS).forEach(function(g){SUBS[g].forEach(function(s){if(s.name.toLowerCase()===tl||String(s.label||"").toLowerCase()===tl)t=s.name})})}
   var isGrp=CATS.some(function(c){return c.name===t});
   if(t==="__promo"||isGrp)cat=t;else{cat="Semua";if(t&&t!=="Semua")F.sub=t}
   chips(CATS);startList();$("explore").scrollIntoView({behavior:"smooth"});
@@ -412,9 +420,11 @@ function renderHero(list){
   list.forEach(function(s,i){
     var d=document.createElement("div");d.className="slide"+(i?"":" on");
     var base=s.warna||"#3d4a52";
-    d.style.background=s.img?"linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.7)),url(\""+String(s.img).replace(/"/g,"%22")+"\") center/cover no-repeat":"linear-gradient(135deg,"+base+",#161616)";
-    d.innerHTML='<div class="big">'+esc(s.besar||"")+'</div><h3>'+esc(s.judul)+'</h3><p>'+esc(s.sub)+'</p><button class="pill" type="button">'+esc(s.tombol||"Lihat Produk")+' ›</button>';
-    d.querySelector(".pill").onclick=function(){goTo(s.tujuan)};
+    var txt=!!(s.judul||s.sub);
+    d.style.background=s.img?(txt?"linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.7)),":"")+"url(\""+String(s.img).replace(/"/g,"%22")+"\") center/cover no-repeat":"linear-gradient(135deg,"+base+",#161616)";
+    d.innerHTML=txt?'<div class="big">'+esc(s.besar||"")+'</div><h3>'+esc(s.judul)+'</h3><p>'+esc(s.sub)+'</p><button class="pill" type="button">'+esc(s.tombol||"Lihat Produk")+' ›</button>':'';
+    var pl=d.querySelector(".pill");if(pl)pl.onclick=function(ev){ev.stopPropagation();goTo(s.tujuan)};
+    d.style.cursor="pointer";d.onclick=function(){goTo(s.tujuan)};
     hero.appendChild(d);
   });
   var dots=document.createElement("div");dots.className="dots";list.forEach(function(_,i){dots.appendChild(document.createElement("i")).className=i?"":"on"});hero.appendChild(dots);
@@ -429,16 +439,16 @@ function openPd(p){cur=p;selC=p.v[0].col;selK=p.v[0].sku;drawPd();pd.showModal()
 function drawPd(){
   var p=cur,cs=uniq(p.v.map(function(v){return v.col})),vs=p.v.filter(function(v){return v.col===selC}),v=vs.find(function(x){return x.sku===selK})||vs[0];selK=v.sku;
   var showSize=vs.length>1||(v.size&&v.size!=="-");
-  var sw=cs.map(function(c){var rep=p.v.filter(function(x){return x.col===c})[0];return '<button class="sw" type="button" data-c="'+esc(c)+'" aria-pressed="'+(c===selC)+'"><b style="border-bottom-color:'+(C[c]||"#8a8d90")+'"></b>'+esc(c||"-")+'</button>'}).join("");
+  var sw=cs.map(function(c){var rep=p.v.filter(function(x){return x.col===c})[0];return '<button class="sw" type="button" data-c="'+esc(c)+'" aria-pressed="'+(c===selC)+'"><b style="border-bottom-color:'+(C[c]||"#8a8d90")+'"></b>'+esc(cn(c))+'</button>'}).join("");
   var sz=vs.map(function(x){return '<button class="sz" type="button" data-k="'+esc(x.sku)+'" aria-pressed="'+(x.sku===selK)+'"'+(x.st<=0?' disabled':'')+'>'+esc(x.size||"-")+'<small>'+(x.st>0?'sisa '+x.st:'habis')+'</small></button>'}).join("");
   var b=$("pdBody");
-  b.innerHTML='<div class="pd-img">'+(v.d?'<span class="badge">-'+v.d+'%</span>':'')+'</div><div class="pd-info"><h3>'+esc(p.n)+'</h3><div class="pd-sub">'+esc(p.c)+' · '+esc(selC)+'</div>'+
+  b.innerHTML='<div class="pd-img">'+(v.d?'<span class="badge">-'+v.d+'%</span>':'')+'</div><div class="pd-info"><h3>'+esc(p.n)+'</h3><div class="pd-sub">'+esc(p.cl||p.c)+' · '+esc(cn(selC))+'</div>'+
   '<div class="pd-price">'+rp(v.price)+(v.d?'<s>'+rp(v.p)+'</s>':'')+'</div>'+
   (p.desc?'<p class="pd-sub" style="margin:8px 0 0">'+esc(p.desc)+'</p>':'')+
   '<div class="pd-row"><span>Warna</span><span>'+cs.length+' pilihan</span></div><div class="opts">'+sw+'</div>'+
   (showSize?'<div class="pd-row"><span>Ukuran</span><span>Dipilih: '+esc(v.size||"-")+'</span></div><div class="opts">'+sz+'</div>':'')+
   '<div class="stk2">'+esc(v.label||"")+'</div>'+
-  '<div class="spec"><span>SKU</span><span>'+esc(v.sku)+'</span><span>Warna</span><span>'+esc(selC)+'</span>'+(showSize?'<span>Ukuran</span><span>'+esc(v.size||"-")+'</span>':'')+'<span>Kategori</span><span>'+esc(p.gr)+' › '+esc(p.c)+'</span></div>'+
+  '<div class="spec"><span>SKU</span><span>'+esc(v.sku)+'</span><span>Warna</span><span>'+esc(cn(selC))+'</span>'+(showSize?'<span>Ukuran</span><span>'+esc(v.size||"-")+'</span>':'')+'<span>Kategori</span><span>'+esc(GLBL[p.gr]||p.gr)+' › '+esc(p.cl||p.c)+'</span></div>'+
   '<div class="note">🏪 Bisa diambil langsung di toko atau dikirim lewat JNE, GoSend, AnterAja.</div></div>';
   setImg(b.querySelector(".pd-img"),v.photo||p.photo,p.gr);
   var pic=b.querySelector(".pd-img");if(v.d){var bd=document.createElement("span");bd.className="badge";bd.textContent="-"+v.d+"%";pic.appendChild(bd)}
@@ -463,7 +473,7 @@ function drawCart(){
   if(!cart.length){l.innerHTML='<div class="empty">Keranjang masih kosong. Pilih produk, lalu ketuk Tambah ke keranjang.</div>'}
   else{l.innerHTML="";cart.forEach(function(i,ix){
     var d=document.createElement("div");d.className="ci";
-    d.innerHTML='<div class="ic"></div><div><b>'+esc(i.n)+'</b><small>'+esc(i.col)+(i.size&&i.size!=="-"?' · '+esc(i.size):'')+'</small><div class="qty"><button type="button" aria-label="Kurangi">−</button><span>'+i.q+'</span><button type="button" aria-label="Tambah">+</button></div></div><div class="pp">'+rp(i.price*i.q)+'<br><button class="rm" type="button">Hapus</button></div>';
+    d.innerHTML='<div class="ic"></div><div><b>'+esc(i.n)+'</b><small>'+esc(cn(i.col))+(i.size&&i.size!=="-"?' · '+esc(i.size):'')+'</small><div class="qty"><button type="button" aria-label="Kurangi">−</button><span>'+i.q+'</span><button type="button" aria-label="Tambah">+</button></div></div><div class="pp">'+rp(i.price*i.q)+'<br><button class="rm" type="button">Hapus</button></div>';
     setImg(d.querySelector(".ic"),i.photo,i.c);
     var b=d.querySelectorAll("button");
     b[0].onclick=function(){i.q--;if(i.q<1)cart.splice(ix,1);save();drawCart()};
@@ -489,12 +499,12 @@ $("ctWa").onclick=function(){
 /* ---------- mulai ---------- */
 load();drawCart();
 function applyInit(r){
-  cfg=r.cfg;SUBS=r.subs||{};$("shop").textContent=cfg.nama;total0=r.total;CATS=r.cats;chips(CATS);
+  cfg=r.cfg;SUBS=r.subs||{};LBL={};GLBL={};Object.keys(SUBS).forEach(function(g){SUBS[g].forEach(function(s){LBL[s.name]=s.label||s.name})});(r.cats||[]).forEach(function(c){GLBL[c.name]=c.label||c.name});$("shop").textContent=cfg.nama;total0=r.total;CATS=r.cats;chips(CATS);
   renderHero(r.banners&&r.banners.length?r.banners:DEF_BANNER);
   var rail=$("rail");rail.innerHTML="";var fr=document.createDocumentFragment();r.promo.forEach(function(p){fr.appendChild(card(p))});rail.appendChild(fr);
   $("promoSub").textContent=r.promoTotal+" produk diskon tersedia di toko";
 }
-function okInit(r){return !!(r&&r.ver>=3&&r.cats&&r.cats.length<=8)}
+function okInit(r){return !!(r&&r.ver>=4&&r.cats&&r.cats.length<=8)}
 var ci=null;try{ci=JSON.parse(localStorage.getItem("toko_init3")||"null")}catch(e){}
 if(!okInit(ci))ci=null;
 if(ci)applyInit(ci);
