@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EIGER SUMATERA BANDUNG</title>
+<meta name="theme-color" content="#0a7cff">
 <meta name="author" content="MUHAMAD REZA PRADANA">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -209,6 +210,50 @@ dialog[open]{animation:pop .2s ease}
 @media(min-width:700px){.cat{font-size:12px}.cat span{max-width:52px;height:52px;font-size:24px}}
 /* rail promo sejajar dengan isi halaman di layar lebar */
 .rail{padding-left:max(16px,calc((100vw - 1100px)/2 + 16px));padding-right:max(16px,calc((100vw - 1100px)/2 + 16px));scroll-padding-left:max(16px,calc((100vw - 1100px)/2 + 16px))}
+/* ===== TEMA PUTIH–BIRU (terang) ===== */
+:root:root:root{--bg:#f3f8ff;--card:#fff;--ink:#0f2747;--mut:#5b6f8c;--dark:#1456c8;--acc:#f47b20;--red:#e5352b;--line:#d9e5f7;color-scheme:light}
+body{background:linear-gradient(180deg,#e6f0ff 0,#f5f9ff 420px,#fff 100%) fixed;color:var(--ink)}
+.top{background:linear-gradient(90deg,#1456c8,#2b7bff);box-shadow:0 2px 10px rgba(20,86,200,.25)}
+.logo small{color:rgba(255,255,255,.85)}
+.nav .on{background:rgba(255,255,255,.24)}
+.search input{box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.promo{background:linear-gradient(180deg,#dbeaff,#eef5ff);color:var(--ink);border-block:1px solid var(--line)}
+.promo h2{color:#0f2747}
+.promo .sub{color:var(--mut)}
+.promo .sec-h button{color:#d9480f}
+.sec-h h2{color:#0f2747}
+.cat span{background:#fff;border:1px solid var(--line);box-shadow:0 1px 4px rgba(20,86,200,.08)}
+.cat[aria-pressed=true] span{background:#1d6fe8;border-color:#1d6fe8;color:#fff}
+.cat[aria-pressed=true]{color:#1d6fe8}
+.card{box-shadow:0 2px 10px rgba(20,86,200,.08)}
+.img{border:1px solid #eaf1fb}
+.sw[aria-pressed=true] b{border-color:#1d6fe8}
+.stk2{color:#d9480f}
+.heart{color:#8ea3c4}
+.fb,.srt select{box-shadow:0 1px 3px rgba(20,86,200,.08)}
+.credit{background:#fff;color:#5b6f8c}
+::selection{background:#bcd7ff}
+/* ===== biru lebih cerah ===== */
+:root:root:root{--bg:#eef7ff;--ink:#0b2a52;--mut:#4f6b8f;--line:#cfe6ff}
+body{background:linear-gradient(180deg,#d9eeff 0,#eef7ff 420px,#fff 100%) fixed}
+.top{background:linear-gradient(90deg,#0a7cff,#33a8ff);box-shadow:0 3px 12px rgba(10,124,255,.3)}
+.promo{background:linear-gradient(180deg,#c9e6ff,#e6f3ff);border-block-color:#bddcff}
+.cat span{border-color:#cfe6ff;box-shadow:0 1px 5px rgba(10,124,255,.12)}
+.cat[aria-pressed=true] span,.cat[aria-pressed=true] span:hover{background:#0a7cff;border-color:#0a7cff}
+.cat[aria-pressed=true]{color:#0a7cff}
+.card{border-color:#d4e9ff;box-shadow:0 3px 12px rgba(10,124,255,.12)}
+.img{border-color:#e3f1ff}
+.tag,.opt[aria-pressed=true],.sz[aria-pressed=true],.cat[aria-pressed=true] span{background:#0a7cff;border-color:#0a7cff;color:#fff}
+.row2 .wa{background:#0a7cff}
+.sw[aria-pressed=true] b{border-color:#0a7cff}
+.credit{border-top-color:#cfe6ff}
+::selection{background:#b5dbff}
+/* ===== keterangan lebih gelap ===== */
+:root:root:root{--mut:#2f4a70}
+.stk{color:#d9560a;font-weight:600}
+.var,.pd-sub,.exSub,#exSub,.sub,.pd-row span:last-child,.cat,.credit{color:var(--mut)}
+.cat[aria-pressed=true]{color:#0a7cff}
+.var{font-size:12.5px}
 </style>
 </head>
 <body>
@@ -402,8 +447,8 @@ $("allPromo").onclick=function(){cat="__promo";chips(CATS);fetchList(true);$("ex
 $("home").onclick=function(){var dirty=cat!=="Semua"||favMode||F.sub||F.gd||F.pr>=0||F.promo||q;if(dirty){resetAll();startList()}window.scrollTo({top:0,behavior:"smooth"})};
 
 /* ---------- hero (banner dari tab BANNER, atau bawaan) ---------- */
-var DEF_BANNER=[{judul:"Explore More",sub:"Temukan perlengkapan adventure pilihanmu",tombol:"Lihat Produk",tujuan:"Semua",warna:"#3d4a52",besar:"",img:""},
-{judul:"Special Promo",sub:"Diskon sampai 50% untuk produk pilihan",tombol:"Lihat Produk",tujuan:"__promo",warna:"#3f5a3a",besar:"50%",img:""}];
+var DEF_BANNER=[{judul:"Explore More",sub:"Temukan perlengkapan adventure pilihanmu",tombol:"Lihat Produk",tujuan:"Semua",warna:"#1e9bff",besar:"",img:""},
+{judul:"Special Promo",sub:"Diskon sampai 50% untuk produk pilihan",tombol:"Lihat Produk",tujuan:"__promo",warna:"#0a7cff",besar:"50%",img:""}];
 var hero=$("hero"),hi=0,htimer=null;
 function goTo(t){
   if(/^https?:\/\//.test(t||"")){window.open(t,"_blank","noopener");return}
@@ -419,9 +464,9 @@ function renderHero(list){
   clearInterval(htimer);hero.innerHTML="";hi=0;
   list.forEach(function(s,i){
     var d=document.createElement("div");d.className="slide"+(i?"":" on");
-    var base=s.warna||"#3d4a52";
+    var base=s.warna||"#1e9bff";
     var txt=!!(s.judul||s.sub);
-    d.style.background=s.img?(txt?"linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.7)),":"")+"url(\""+String(s.img).replace(/"/g,"%22")+"\") center/cover no-repeat":"linear-gradient(135deg,"+base+",#161616)";
+    d.style.background=s.img?(txt?"linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.7)),":"")+"url(\""+String(s.img).replace(/"/g,"%22")+"\") center/cover no-repeat":"linear-gradient(135deg,"+base+",#0a5fe0)";
     d.innerHTML=txt?'<div class="big">'+esc(s.besar||"")+'</div><h3>'+esc(s.judul)+'</h3><p>'+esc(s.sub)+'</p><button class="pill" type="button">'+esc(s.tombol||"Lihat Produk")+' ›</button>':'';
     var pl=d.querySelector(".pill");if(pl)pl.onclick=function(ev){ev.stopPropagation();goTo(s.tujuan)};
     d.style.cursor="pointer";d.onclick=function(){goTo(s.tujuan)};
